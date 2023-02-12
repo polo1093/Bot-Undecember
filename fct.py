@@ -47,6 +47,20 @@ def find_blue(path):
         if p[2] > 34 and 80 > p[0]+p[1]:
             return i
     return False
+
+def launch_tower(wave,num_perso=2):
+    if not launch(num_perso):
+        return False
+    else:
+        start_time = time.perf_counter()
+        while not go_tower(wave):
+            if time.perf_counter()-start_time > 21*60:
+                return False
+            if not in_city():
+                leave_map()
+        return True
+    
+
     
 def launch(num_perso):
     path_img='screen/launch/icone.png'
@@ -55,46 +69,57 @@ def launch(num_perso):
         click_icone('screen/launch/icone.png')
         pyautogui.leftClick()
         time.sleep(np.random.uniform(13.1, 15))
-        in_game = 0
-        while in_game == 0:
-            if click_icone('screen/launch/start_1.png',20,0.6,False) == False:
-                return False
-            time.sleep(np.random.uniform(5.1, 7))
+        
+        if click_icone('screen/launch/start_1.png',20,0.6,False) == False:
+            return False
+        time.sleep(np.random.uniform(5.1, 7))
 
-            if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
+        if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
+            return False
+        time.sleep(np.random.uniform(0.3, 0.7))
+        
+        if click_icone('screen/launch/start_2.png',20,0.6) == False:
+            return False
+        time.sleep(7) 
+
+        if not in_city():
+            leave_map()
+            if not in_city():
                 return False
-            time.sleep(np.random.uniform(0.3, 0.7))
-            
-            if click_icone('screen/launch/start_2.png',20,0.6) == False:
-                return False
-            time.sleep(np.random.uniform(2, 2.7)) 
-            
-            in_game=20
-            find = None
-            find_2= None
-            while find is None and in_game != 0:
-                path_img='screen/launch/in_game.png'
-                find = pyautogui.locateOnScreen(path_img, grayscale=True, confidence=0.90)
-                path_img='screen/launch/party.png'
-                find_2 = pyautogui.locateOnScreen(path_img, grayscale=True, confidence=0.90)
-                if find is not None:
-                    find = pyautogui.center(find)
-                    pyautogui.leftClick(find)
-                    time.sleep(np.random.uniform(1.1, 2))
-                    click_icone('screen/launch/c_party.png')
-                    time.sleep(np.random.uniform(1.1, 2))
-                    click_icone('screen/launch/ok.png')
-                    time.sleep(np.random.uniform(1.1, 3))
-                    click_icone('screen/launch/ok.png')
-                elif find_2 is not None: 
-                    find=find_2
-                time.sleep(np.random.uniform(1.1, 2))
-                in_game -=1
+                
+        return party_area()
+    return True
+
+
+def party_area():
+    if not click_icone('screen/launch/party.png',1, confidence=0.90):
+        #create party area
+        if not click_icone('screen/launch/in_game.png'):
+            return False
+        pyautogui.leftClick()
+        time.sleep(np.random.uniform(1.1, 2))
+        click_icone('screen/launch/c_party.png')
+        time.sleep(np.random.uniform(1.1, 2))
+        click_icone('screen/launch/ok.png')
+        time.sleep(np.random.uniform(1.1, 2))
+        click_icone('screen/launch/ok.png')
+        time.sleep(np.random.uniform(2, 3))
+        click_icone('screen/launch/party.png',1, confidence=0.90)
+    #test si on y est
+    if click_icone('screen/launch/move_to_party_area.png',1):
+        time.sleep(np.random.uniform(2, 3))
+        click_icone('screen/launch/party.png',1, confidence=0.90)
+    if pyautogui.locateOnScreen('screen/launch/Leave_to_party_area.png',grayscale=True,confidence=0.9) \
+            or pyautogui.locateOnScreen('screen/launch/Leave_to_party_area_light.png',grayscale=True,confidence=0.9):
+        click_icone('screen/launch/reset.png',1)
         return True
+    click_icone('screen/launch/reset.png',1)
     return False
+    
+    
+
 
 def raid(creneau1=[15.45,18.15],creneau2=0):
-        
     now = datetime.datetime.now()
     if now.hour>= int(creneau1[0]) and now.hour<=creneau1[1]:
         if now.hour==int(creneau1[1]) and now.minute>=creneau1[1]%1*100:
@@ -103,7 +128,6 @@ def raid(creneau1=[15.45,18.15],creneau2=0):
             return True
         if now.hour==int(creneau1[0]) and now.minute>=creneau1[0]%1*100:
             return True
-        
     if creneau2:      
         if now.hour>= int(creneau2[0]) and now.hour<=creneau2[1]:
             if now.hour==int(creneau2[1]) and now.minute>=creneau2[1]%1*100:
@@ -180,15 +204,9 @@ def go_blacksmith():
         return False
     time.sleep(0.5)
     click_icone('screen/launch/arme.png')
-    click_icone('screen/launch/normal.png',1,0.3,True,0.99)
-    click_icone('screen/launch/magic.png',1,0.3,True,0.98)
-    click_icone('screen/launch/rare.png',1,0.3,True,0.98)
     click_icone('screen/launch/clear.png')
     
     click_icone('screen/launch/link.png')
-    click_icone('screen/launch/normal.png',1,0.3,True,0.99)
-    click_icone('screen/launch/magic.png',1,0.3,True,0.98)
-    click_icone('screen/launch/rare.png',1,0.3,True,0.98)
     click_icone('screen/launch/clear.png')
     
     click_icone('screen/launch/detruire.png',1,0.3,True)
@@ -207,14 +225,7 @@ def go_storage():
         click_icone('screen/launch/icone_storage.png')
         time.sleep(3)
         click_icone('screen/launch/storage.png',1)
-        click_icone('screen/launch/currency.png')
-        click_icone('screen/launch/clear.png')
-        click_icone('screen/launch/alchimie.png')
-        click_icone('screen/launch/clear.png')
-        click_icone('screen/launch/map.png')
-        click_icone('screen/launch/clear.png')
-        click_icone('screen/launch/charm.png')
-        click_icone('screen/launch/clear.png')
+        click_icone('screen/launch/storage_clear.png',1)
         
         click_icone('screen/launch/croix.png')
         time.sleep(0.5)
@@ -238,7 +249,7 @@ def go_alchimie(wave):
     time.sleep(1)
     if go_waypoint():
         move_trajet(wave["go_alchimie"])
-        keyboard('f')
+        click_icone('screen/alchimie/take_alchimie.png',3)
         return True
     return False
 
@@ -274,11 +285,11 @@ def prepar_run(num_perso=2):
     click_icone('screen/map/skill_passif.png',2)
     if num_perso==1 and click_icone('screen/map/aura_1.png',1,gris=False):
         keyboard('w',0.3)
-    if num_perso==2:
+    if num_perso>=2:
         pass
     click_icone('screen/map/skill_actif.png',2)
     
-    if num_perso==2:
+    if num_perso>=2:
             keyboard('q',0.7)
             time.sleep(1)
             keyboard('r',0.7)
@@ -307,11 +318,13 @@ def kill_boss(trajet,retry,num_perso=2):
             if pyautogui.locateOnScreen(f'screen/launch/ok_map.png',confidence=0.7):
                 break
             if death():return True
+            if num_perso>=2 and i%4==3:keyboard('q',0.7)
             time.sleep(0.3)
         time.sleep(3)
         keyboard('z')
+        time.sleep(np.random.uniform(3.5, 4.8)) 
         click_icone('screen/launch/ok.png')
-        time.sleep(np.random.uniform(4.5, 5.8)) 
+        time.sleep(np.random.uniform(4.9, 5.8)) 
         return True
     if retry:
         # en recommence la map si on ne peut pas invoquer le boss
@@ -321,12 +334,14 @@ def kill_boss(trajet,retry,num_perso=2):
     
 
 def leave_map(retry=True):
-    if pyautogui.locateOnScreen(f'screen/map/scroll_cooldown.png',region=[819,1354,845,1400],confidence=0.8,grayscale=True):
-        while pyautogui.locateOnScreen(f'screen/map/scroll_cooldown.png',region=[819,1354,845,1400],confidence=0.8,grayscale=True):
+    if pyautogui.locateOnScreen(f'screen/map/scroll_cooldown.png',region=[700,1354,722,1416],confidence=0.9):
+        start_time = time.perf_counter()
+        while pyautogui.locateOnScreen(f'screen/map/scroll_cooldown.png',region=[700,1354,722,1416],confidence=0.9) \
+        and time.perf_counter()-start_time <60*9:
             time.sleep(1)
         for i in range(61):time.sleep(1)
-    if pyautogui.locateOnScreen(f'screen/map/scroll.png',confidence=0.9,grayscale=True) \
-        or pyautogui.locateOnScreen(f'screen/map/exit.png',confidence=0.9,grayscale=True) :
+    if pyautogui.locateOnScreen(f'screen/map/scroll.png',confidence=0.9) \
+        or pyautogui.locateOnScreen(f'screen/map/exit.png',confidence=0.9) :
         keyboard('z')
         keyboard('f') 
         click_icone('screen/launch/ok.png',1)
@@ -343,8 +358,12 @@ def escape():
     time.sleep(0.5)
     click_icone('screen/map/account.png')
     time.sleep(0.5)
+    start_time = time.perf_counter()
     while not click_icone('screen/map/escape.png'):
         time.sleep(2.5)
+        if time.perf_counter()-start_time < 60*5:
+            click_icone('screen/launch/croix.png') 
+            break
     click_icone('screen/launch/ok.png')   
     
 
@@ -363,7 +382,7 @@ def calcul_distance(x1, y1):
 
 def time_run(x,y):
     """Pr 1101 unité parcourus il faut 2.14s, on va multi par racine de deux pr avoir de la marge"""
-    return calcul_distance(x,y)*math.sqrt(2)*2.14/1101
+    return (calcul_distance(x,y)*2.14/1101) * math.sqrt(2)
 
 def in_map():
     path=f'screen/launch/test_in_game.png'
@@ -398,10 +417,11 @@ def craft_charm():
     time.sleep(1)
     click_icone('screen/alchimie/synthesis.png',1)
     click_icone('screen/alchimie/synthesis.png',1)
-    click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
-    click_icone('screen/alchimie/magic_charm.png',1,0.3)
+    if not click_icone('screen/alchimie/magic_charm.png',1,0.3):
+        click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
+        click_icone('screen/alchimie/magic_charm.png',1,0.3)
     pyautogui.leftClick(2100,700)
-    for i in range(0,160):
+    for i in range(0,100):
         pyautogui.scroll(-30000)
     for i in range (0,3):
         pyautogui.rightClick(1980,950)
@@ -409,11 +429,16 @@ def craft_charm():
     click_icone('screen/alchimie/craft.png')
     
 def alchimie_charm():
-    if click_icone('screen/alchimie/atelier_1.png',1,0) or click_icone('screen/alchimie/atelier_2.png',1,0):
-        click_icone('screen/alchimie/ok.png')
-        time.sleep(1)
+    if click_icone('screen/alchimie/atelier.png',1,0,confidence=0.8) :
         click_icone('screen/alchimie/receive.png')
+        time.sleep(0.5)
+        pyautogui.leftClick()
+        time.sleep(0.5)
+        pyautogui.leftClick()
         craft_charm()
+    elif click_icone('screen/alchimie/atelier_vide.png',1,0):
+        craft_charm()
+        
 
 def alchimie(wave,num_perso=2):
     for i in range(3):
@@ -437,7 +462,7 @@ def close_game(message=""):
         pyautogui.leftClick(2500,150)
         time.sleep(1)
         print(f'Close game for {message}')
-        message+=str(int(np.random.uniform(0, 1000)))
+        message+=" %s_%s "%(time.localtime().tm_hour,time.localtime().tm_min)
         pyautogui.screenshot(region=(0,0, 2500, 1400)).save(f"screen/erreur/close{message}.png") 
         pyautogui.keyDown('alt')
         pyautogui.keyDown('F4')
