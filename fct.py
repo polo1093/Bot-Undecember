@@ -217,7 +217,25 @@ def go_blacksmith():
     click_icone('screen/launch/croix.png',1)
     time.sleep(0.5)
     return True
-    
+
+def go_sell():
+    go_waypoint()
+    click_icone('screen/launch/icone_blacksmith.png')
+    time.sleep(5)
+    if click_icone('screen/launch/icone_sell.png')==False:
+        return False
+    time.sleep(0.5)
+    if click_icone('screen/launch/arme.png'):
+        click_icone('screen/launch/arme.png')
+        click_icone('screen/launch/clear.png')
+        
+        click_icone('screen/launch/sell.png',1,0.3,True)
+        click_icone('screen/launch/ok.png',1)
+
+    click_icone('screen/launch/croix.png',2)
+    click_icone('screen/launch/croix.png',1)
+    time.sleep(0.5)
+    return True   
 
 def go_storage():
     time.sleep(0.5)
@@ -300,7 +318,7 @@ def prepar_run(num_perso=2):
     
 
      
-def kill_boss(trajet,retry,num_perso=2):
+def kill_boss(trajet,retry,num_perso=2,re_kill_boss=False):
     time.sleep(np.random.uniform(1.7, 2.2))
     if click_icone('screen/launch/boss.png',2) ==True:
         time.sleep(np.random.uniform(0.7, 1.2))
@@ -323,7 +341,8 @@ def kill_boss(trajet,retry,num_perso=2):
         time.sleep(3)
         keyboard('z')
         time.sleep(np.random.uniform(3.5, 4.8)) 
-        click_icone('screen/launch/ok.png')
+        if not click_icone('screen/launch/ok.png') and re_kill_boss==False:
+            kill_boss(trajet,retry,num_perso=2,re_kill_boss=True)
         time.sleep(np.random.uniform(4.9, 5.8)) 
         return True
     if retry:
@@ -403,11 +422,14 @@ def death():
 
     
     
-def se_vider():
+def se_vider(sell=False):
     if in_city():
-        if go_blacksmith()==False:
+        if sell:
+            if go_sell()==False:
+                if go_sell()==False:return False           
+        else:
             if go_blacksmith()==False:
-                return False
+                if go_blacksmith()==False:return False
         go_storage()
         return True 
     return False
