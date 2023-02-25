@@ -60,7 +60,11 @@ def launch_tower(wave,num_perso=2):
                 leave_map()
         return True
     
-
+def launch_window():
+    pyautogui.leftClick(30,1415)
+    pyautogui.leftClick(550,780)
+    pyautogui.leftClick(1400,600)
+    
     
 def launch(num_perso):
     path_img='screen/launch/icone.png'
@@ -71,7 +75,12 @@ def launch(num_perso):
         time.sleep(np.random.uniform(13.1, 15))
         
         if click_icone('screen/launch/start_1.png',20,0.6,False) == False:
-            return False
+            pyautogui.leftClick(1650,15)
+            time.sleep(1)
+            launch_window()
+            time.sleep(1)
+            if click_icone('screen/launch/start_1.png',5,0.6,False) == False:
+                return False
         time.sleep(np.random.uniform(5.1, 7))
 
         if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
