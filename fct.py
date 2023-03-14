@@ -25,8 +25,6 @@ def clik_move_map(x,y):
     pyautogui.leftClick(x,y,duration=0.08)
     time.sleep(0.08)
     b=pyautogui.screenshot(region=(x-50,y-50, 150, 150))
-    #a.show()
-    #b.show()
     # Obtenir les données de pixels de chaque image
     a_data = a.getdata()
     b_data = b.getdata()
@@ -37,8 +35,7 @@ def clik_move_map(x,y):
     # Vérifier si le pourcentage de pixels identiques est supérieur ou égal à 95 %
     if similarity >= 0.95:
         return False
-    else:
-        return True
+    return True
     
 def find_blue(path):
     find = pyautogui.locateAllOnScreen(path,region=[1930,363,2445-1930,1070-363], confidence=0.99)
