@@ -41,12 +41,39 @@ def clik_move_map(x,y):
         return True
     
 def find_blue(path):
-    find = pyautogui.locateAllOnScreen(path, confidence=0.99)
+    find = pyautogui.locateAllOnScreen(path,region=[1930,363,2445-1930,1070-363], confidence=0.99)
     for i in find:
         p= pyautogui.screenshot().getpixel((i[0]+i[2]-5,i[1]+i[3]-5))
         if p[2] > 34 and 80 > p[0]+p[1]:
             return i
     return False
+
+def find_yellow(path,number=10):
+    find = pyautogui.locateAllOnScreen(path,region=[1930,363,2445-1930,1070-363], confidence=0.98)
+    _map = []
+    
+    threshold=10
+    for i in find:
+        print(i)
+        is_unique=True
+        for j in find:
+            dist = math.sqrt( (i[0]-j[0])**2 + (i[1]-j[1])**2 )
+            if  dist < threshold:
+                is_unique = False
+                break
+        if is_unique:
+            _map.append(i)
+        
+            #p= pyautogui.screenshot().getpixel((i[0]+i[2]-5,i[1]+i[3]-5))
+            #if p[2] > 34 and 80 > p[0]+p[1]: #color neeeds to be changed 
+        
+        
+    return _map
+    
+
+
+
+
 
 def launch_tower(wave,num_perso=2):
     if not launch(num_perso):
@@ -55,7 +82,8 @@ def launch_tower(wave,num_perso=2):
         start_time = time.perf_counter()
         while not go_tower(wave):
             if time.perf_counter()-start_time > 21*60:
-                return False
+                close_game("no_go_tower")
+                launch(num_perso)
             if not in_city():
                 leave_map()
         return True
@@ -84,7 +112,12 @@ def launch(num_perso):
         time.sleep(np.random.uniform(5.1, 7))
 
         if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
-            return False
+            pyautogui.leftClick(1650,15)
+            time.sleep(1)
+            launch_window()
+            time.sleep(1)
+            if click_icone(f'screen/launch/perso{num_perso}.png',5,0.6) == False:
+                return False
         time.sleep(np.random.uniform(0.3, 0.7))
         
         if click_icone('screen/launch/start_2.png',20,0.6) == False:
@@ -103,15 +136,24 @@ def launch(num_perso):
 def party_area():
     if not click_icone('screen/launch/party.png',1, confidence=0.90):
         #create party area
-        if not click_icone('screen/launch/in_game.png'):
+        if not click_icone('screen/launch/in_game.png',1): # un peu redontant avec c_party
             return False
         pyautogui.leftClick()
-        time.sleep(np.random.uniform(1.1, 2))
         click_icone('screen/launch/c_party.png')
+        click_icone('screen/launch/c_party.png',1)
+        time.sleep(np.random.uniform(0.2, 0.8))
+        
+        #create name
+        pyautogui.leftClick(950,300)
+        pyautogui.leftClick(950,300)
+        pyautogui.write("TarStaP")
+        while click_icone('screen/launch/button.png',1):
+            1
+        click_icone('screen/launch/Create.png',1)
+        click_icone('screen/launch/Create.png',1)
         time.sleep(np.random.uniform(1.1, 2))
-        click_icone('screen/launch/ok.png')
-        time.sleep(np.random.uniform(1.1, 2))
-        click_icone('screen/launch/ok.png')
+        click_icone('screen/launch/ok.png',1)
+        click_icone('screen/launch/ok.png',1)
         time.sleep(np.random.uniform(2, 3))
         click_icone('screen/launch/party.png',1, confidence=0.90)
     #test si on y est
@@ -452,7 +494,7 @@ def craft_charm():
         click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
         click_icone('screen/alchimie/magic_charm.png',1,0.3)
     pyautogui.leftClick(2100,700)
-    for i in range(0,100):
+    for i in range(0,50):
         pyautogui.scroll(-30000)
     for i in range (0,3):
         pyautogui.rightClick(1980,950)
