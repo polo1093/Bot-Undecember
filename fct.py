@@ -7,6 +7,17 @@ import re
 import datetime
 import math 
 
+region={"Wanderer": "Aphros",
+        "Plague" :  "Ortemis",
+        "Flash" :   "Caspol",
+        "Pirate":   "Ganida",
+        "Hammer":   "Eunos",
+        "Brazier":  "Tipan",
+        "Air":      "Stra",
+        "Shepherd": "Laia",
+        "Greed":    "Tri",
+        "Lighting": "Hira",
+        "Cycle":    "Nemera"}
 
 def click_icone(path,boucle=10,wait=0.3,gris=True,confidence=0.95):
     while boucle > 0:
@@ -45,30 +56,25 @@ def find_blue(path):
             return i
     return False
 
-def find_yellow(path,number=10):
-    find = pyautogui.locateAllOnScreen(path,region=[1930,363,2445-1930,1070-363], confidence=0.98)
-    _map = []
     
-    threshold=10
-    for i in find:
-        print(i)
-        is_unique=True
-        for j in find:
-            dist = math.sqrt( (i[0]-j[0])**2 + (i[1]-j[1])**2 )
-            if  dist < threshold:
-                is_unique = False
-                break
-        if is_unique:
-            _map.append(i)
-        
-            #p= pyautogui.screenshot().getpixel((i[0]+i[2]-5,i[1]+i[3]-5))
-            #if p[2] > 34 and 80 > p[0]+p[1]: #color neeeds to be changed 
-        
-        
-    return _map
+def find_region(m,number=10):
+    #mise ne place du filtre
+    click_icone('screen/launch/start_filtre.png',1)
+    click_icone('screen/launch/start_filtre.png',1)
     
-
-
+    pyautogui.leftClick(1150,1000)
+    if click_icone('screen/launch/select_all.png',1):
+        click_icone('screen/launch/select_all.png',1)
+        
+    click_icone(f'screen/map/{region[m]}.png',1)
+    click_icone('screen/map/ok_filtre.png',1)
+    click_icone('screen/map/ok_filtre.png',1)
+    
+    #test si on a la map
+    x_ligne=410+101*(int(number/5)+1)
+    if not pyautogui.locateOnScreen('screen/map/case_vide.png',region=[1920,x_ligne-65,130,130]):
+        return 1980,x_ligne 
+    return False
 
 
 
