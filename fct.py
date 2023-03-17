@@ -56,26 +56,33 @@ def find_blue(path):
             return i
     return False
 
-    
-def find_region(m,number=10):
-    #mise ne place du filtre
+
+def reset_region():
     click_icone('screen/launch/start_filtre.png',1)
     click_icone('screen/launch/start_filtre.png',1)
-    
     pyautogui.leftClick(1150,1000)
     if click_icone('screen/launch/select_all.png',1):
         click_icone('screen/launch/select_all.png',1)
-        
+    
+def find_region(m,number=10):
+    #mise ne place du filtre
+    reset_region()   
     click_icone(f'screen/map/{region[m]}.png',1)
     click_icone('screen/map/ok_filtre.png',1)
     click_icone('screen/map/ok_filtre.png',1)
     
     #test si on a la map
-    x_ligne=410+101*(int(number/5)+1)
+    x_ligne=410+101*(int(number/5))
     if not pyautogui.locateOnScreen('screen/map/case_vide.png',region=[1920,x_ligne-65,130,130]):
         return 1980,x_ligne 
     return False
 
+def filtre_map(list_map):
+    reset_region()  
+    for m in list_map: 
+        click_icone(f'screen/map/{region[m]}.png',1)
+    click_icone('screen/map/ok_filtre.png',1)
+    click_icone('screen/map/ok_filtre.png',1)      
 
 
 def launch_tower(wave,num_perso=2):
