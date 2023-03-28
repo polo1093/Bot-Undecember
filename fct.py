@@ -79,8 +79,8 @@ def find_region(m,number=10):
 
 def filtre_map(list_map):
     reset_region()  
-    for m in list_map: 
-        click_icone(f'screen/map/{region[m]}.png',1)
+    for name_map in list_map: 
+        click_icone(f'screen/map/{region[name_map]}.png',1)
     click_icone('screen/map/ok_filtre.png',1)
     click_icone('screen/map/ok_filtre.png',1)      
 
