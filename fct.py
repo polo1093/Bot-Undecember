@@ -1,7 +1,6 @@
 import numpy as np
 import time
 import pyautogui
-import pydirectinput
 import pandas as pd
 import re
 import datetime
