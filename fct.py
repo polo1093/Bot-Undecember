@@ -230,9 +230,9 @@ def go_waypoint():
     return True
 
 def keyboard(key,press=0.5,end=0.5):
-    pydirectinput.keyDown(key)
+    pyautogui.keyDown(key)
     time.sleep(np.random.uniform(press*0.8, press*1.2))
-    pydirectinput.keyUp(key)
+    pyautogui.keyUp(key)
     time.sleep(np.random.uniform(end*0.8, end*1.2))
     
     
