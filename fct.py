@@ -362,13 +362,13 @@ def error_start_map(list_map):
 def prepar_run(num_perso=2):
     click_icone('screen/map/skill_passif.png',2)
     if num_perso==1 and click_icone('screen/map/aura_1.png',1,gris=False):
-        keyboard('w',0.3)
+        keyboard('z',0.3)
     if num_perso>=2:
         pass
     click_icone('screen/map/skill_actif.png',2)
     
     if num_perso>=2:
-            keyboard('q',0.7)
+            keyboard('a',0.7)
             time.sleep(1)
             keyboard('r',0.7)
             time.sleep(1)
@@ -389,17 +389,17 @@ def kill_boss(trajet,retry,num_perso=2,re_kill_boss=False):
             time.sleep(0.5)
         move_trajet(trajet)
         if  num_perso==1:
-            keyboard('w')
+            keyboard('z')
             keyboard('e')
             
         for i in range(100):
             if pyautogui.locateOnScreen(f'screen/launch/ok_map.png',confidence=0.7):
                 break
             if death():return True
-            if num_perso>=2 and i%4==3:keyboard('q',0.7)
+            if num_perso>=2 and i%4==3:keyboard('a',0.7)
             time.sleep(0.3)
         time.sleep(3)
-        keyboard('z')
+        keyboard('w')
         time.sleep(np.random.uniform(3.5, 4.8)) 
         if not click_icone('screen/launch/ok.png') and re_kill_boss==False:
             kill_boss(trajet,retry,num_perso=2,re_kill_boss=True)
@@ -421,7 +421,7 @@ def leave_map(retry=True):
         for i in range(61):time.sleep(1)
     if pyautogui.locateOnScreen(f'screen/map/scroll.png',confidence=0.9) \
         or pyautogui.locateOnScreen(f'screen/map/exit.png',confidence=0.9) :
-        keyboard('z')
+        keyboard('w')
         keyboard('f') 
         click_icone('screen/launch/ok.png',1)
         time.sleep(np.random.uniform(4.5, 5.8))  
