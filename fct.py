@@ -85,25 +85,38 @@ def filtre_map(list_map):
 
 
 def launch_tower(wave,num_perso=2):
-    if not launch(num_perso):
+    if not launch_game(num_perso):
         return False
     else:
         start_time = time.perf_counter()
         while not go_tower(wave):
             if time.perf_counter()-start_time > 21*60:
                 close_game("no_go_tower")
-                launch(num_perso)
+                launch_game(num_perso)
             if not in_city():
                 leave_map()
         return True
-    
-def launch_window():
-    pyautogui.leftClick(30,1415)
-    pyautogui.leftClick(550,780)
+
+
+def launch_remote_desk():
+    pyautogui.leftClick(181,1406)
+    time.sleep(0.2)
     pyautogui.leftClick(1400,600)
+    time.sleep(0.1)
+    pyautogui.leftClick(1000,500)
+    pyautogui.write("total")
+    time.sleep(0.1)
+    pyautogui.keyDown('shift')
+    pyautogui.write("22")
+    pyautogui.keyUp('shift')
+    pyautogui.leftClick(1100,735)
+    time.sleep(2)
     
     
-def launch(num_perso):
+    
+    
+    
+def launch_game(num_perso):
     path_img='screen/launch/icone.png'
     find = pyautogui.locateOnScreen(path_img, grayscale=True, confidence=0.8)
     if find :
@@ -114,7 +127,7 @@ def launch(num_perso):
         if click_icone('screen/launch/start_1.png',20,0.6,False) == False:
             pyautogui.leftClick(1650,15)
             time.sleep(1)
-            launch_window()
+            launch_remote_desk()
             time.sleep(1)
             if click_icone('screen/launch/start_1.png',5,0.6,False) == False:
                 return False
@@ -123,7 +136,7 @@ def launch(num_perso):
         if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
             pyautogui.leftClick(1650,15)
             time.sleep(1)
-            launch_window()
+            launch_remote_desk()
             time.sleep(1)
             if click_icone(f'screen/launch/perso{num_perso}.png',5,0.6) == False:
                 return False
@@ -553,8 +566,20 @@ def close_game(message=""):
         pyautogui.keyUp('F4')
         return True
     return False
-    
 
+SCREEN_RESOLUTION_actualy= pyautogui.size()
+SCREEN_RESOLUTION_native= (2560,1440)
+def resolution_scale(width,height):
+    """_summary_
+
+    Args:
+        width (int): _description_
+        height (int): _description_
+    """    
+    width=width*SCREEN_RESOLUTION_actualy.width//SCREEN_RESOLUTION_native[0]
+    height=height*SCREEN_RESOLUTION_actualy.height//SCREEN_RESOLUTION_native[1]
+    return width,height
+    
         
             
         
