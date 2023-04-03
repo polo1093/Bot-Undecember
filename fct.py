@@ -508,13 +508,15 @@ def se_vider(sell=False):
     return False
 
 
-def craft_charm():
+def craft_charm(rare_charm=False):
     time.sleep(1)
     click_icone('screen/alchimie/synthesis.png',1)
     click_icone('screen/alchimie/synthesis.png',1)
-    if not click_icone('screen/alchimie/magic_charm.png',1,0.3):
+    if rare_charm: path='screen/alchimie/rare_charm.png'
+    else: path='screen/alchimie/magic_charm.png'
+    if not click_icone(path,1,0.3):
         click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
-        click_icone('screen/alchimie/magic_charm.png',1,0.3)
+        click_icone(path,1,0.3)
     pyautogui.leftClick(2100,700)
     for i in range(0,50):
         pyautogui.scroll(-30000)
@@ -523,29 +525,29 @@ def craft_charm():
         time.sleep(0.3)
     click_icone('screen/alchimie/craft.png')
     
-def alchimie_charm():
+def alchimie_charm(rare_charm=False):
     if click_icone('screen/alchimie/atelier.png',1,0,confidence=0.8) :
         click_icone('screen/alchimie/receive.png')
         time.sleep(0.5)
         pyautogui.leftClick()
         time.sleep(0.5)
         pyautogui.leftClick()
-        craft_charm()
+        craft_charm(rare_charm)
     elif click_icone('screen/alchimie/atelier_vide.png',1,0):
-        craft_charm()
+        craft_charm(rare_charm)
         
 
-def alchimie(wave,num_perso=2):
+def alchimie(wave,num_perso=2,rare_charm=False):
     for i in range(3):
         if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) is None :
             go_alchimie(wave)
             time.sleep(0.5)
     
         if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) :
-            alchimie_charm()
-            if num_perso==1:
-                for j in range(3):
-                    alchimie_charm()
+            if num_perso==1:nbr_atelier=4
+            else:nbr_atelier=1
+            for i in range(nbr_atelier):
+                alchimie_charm(rare_charm)
             click_icone('screen/launch/croix.png')
             time.sleep(0.5)
             return True
