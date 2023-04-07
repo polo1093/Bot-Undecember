@@ -556,7 +556,19 @@ def close_game(message=""):
     
 
         
-            
+SCREEN_RESOLUTION_actualy= pyautogui.size()
+SCREEN_RESOLUTION_native= (2560,1440)
+def resolution_scale(point):
+    if pd.isna(point) :
+        return pd.NA
+    width,height=re.findall(r'\d+',point)
+    width=int(width)
+    height=int(height)
+    
+    width=width*SCREEN_RESOLUTION_actualy.width//SCREEN_RESOLUTION_native[0]
+    height=height*SCREEN_RESOLUTION_actualy.height//SCREEN_RESOLUTION_native[1]
+    return width,height
+                
         
     
            
