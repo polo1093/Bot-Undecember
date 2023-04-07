@@ -104,6 +104,7 @@ def launch_remote_desk():
     pyautogui.leftClick(1400,600)
     time.sleep(0.1)
     pyautogui.leftClick(1000,500)
+    time.sleep(0.1)
     pyautogui.write("total")
     time.sleep(0.1)
     pyautogui.keyDown('shift')
@@ -571,17 +572,16 @@ def close_game(message=""):
 
 SCREEN_RESOLUTION_actualy= pyautogui.size()
 SCREEN_RESOLUTION_native= (2560,1440)
-def resolution_scale(width,height):
-    """_summary_
-
-    Args:
-        width (int): _description_
-        height (int): _description_
-    """    
+def resolution_scale(point):
+    if pd.isna(point) :
+        return pd.NA
+    width,height=re.findall(r'\d+',point)
+    width=int(width)
+    height=int(height)
+    
     width=width*SCREEN_RESOLUTION_actualy.width//SCREEN_RESOLUTION_native[0]
     height=height*SCREEN_RESOLUTION_actualy.height//SCREEN_RESOLUTION_native[1]
     return width,height
-    
         
             
         
