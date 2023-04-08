@@ -5,6 +5,12 @@ import pandas as pd
 import re
 import datetime
 import math 
+from importlib import reload
+import src.timer as timer
+reload(timer)
+
+
+
 
 region={"Wanderer": "Aphros",
         "Plague" :  "Ortemis",
@@ -102,15 +108,16 @@ def launch_remote_desk():
     pyautogui.leftClick(181,1406)
     time.sleep(0.2)
     pyautogui.leftClick(1400,600)
-    time.sleep(0.1)
-    pyautogui.leftClick(1000,500)
-    time.sleep(0.1)
+    time.sleep(0.4)
+    pyautogui.write("")
+    time.sleep(0.10)
     pyautogui.write("total")
-    time.sleep(0.1)
+    time.sleep(0.10)
     pyautogui.keyDown('shift')
     pyautogui.write("22")
     pyautogui.keyUp('shift')
-    pyautogui.leftClick(1100,735)
+    time.sleep(0.1)
+    pyautogui.leftClick(1100,777)
     time.sleep(2)
     
     
@@ -122,6 +129,7 @@ def launch_game(num_perso):
     find = pyautogui.locateOnScreen(path_img, grayscale=True, confidence=0.8)
     if find :
         click_icone('screen/launch/icone.png')
+        pyautogui.leftClick()
         pyautogui.leftClick()
         time.sleep(np.random.uniform(13.1, 15))
         
