@@ -8,6 +8,8 @@ import math
 from importlib import reload
 import src.timer as timer
 reload(timer)
+import src.alchimie as alchimie
+reload(alchimie)
 
 
 
@@ -123,7 +125,6 @@ def launch_remote_desk():
     
     
     
-    
 def launch_game(num_perso):
     path_img='screen/launch/icone.png'
     find = pyautogui.locateOnScreen(path_img, grayscale=True, confidence=0.8)
@@ -178,8 +179,7 @@ def party_area():
         pyautogui.leftClick(950,300)
         pyautogui.leftClick(950,300)
         pyautogui.write("TarStaP")
-        while click_icone('screen/launch/button.png',1):
-            1
+        while click_icone('screen/launch/button.png',1): 1
         click_icone('screen/launch/Create.png',1)
         click_icone('screen/launch/Create.png',1)
         time.sleep(np.random.uniform(1.1, 2))
@@ -196,28 +196,6 @@ def party_area():
         click_icone('screen/launch/reset.png',1)
         return True
     click_icone('screen/launch/reset.png',1)
-    return False
-    
-    
-
-
-def raid(creneau1=[15.45,18.15],creneau2=0):
-    now = datetime.datetime.now()
-    if now.hour>= int(creneau1[0]) and now.hour<=creneau1[1]:
-        if now.hour==int(creneau1[1]) and now.minute>=creneau1[1]%1*100:
-            return False
-        if now.hour>int(creneau1[0]):
-            return True
-        if now.hour==int(creneau1[0]) and now.minute>=creneau1[0]%1*100:
-            return True
-    if creneau2:      
-        if now.hour>= int(creneau2[0]) and now.hour<=creneau2[1]:
-            if now.hour==int(creneau2[1]) and now.minute>=creneau2[1]%1*100:
-                return False
-            if now.hour>int(creneau2[0]):
-                return True
-            if now.hour==int(creneau2[0]) and now.minute>=creneau2[0]%1*100:
-                return True
     return False
 
 
@@ -396,9 +374,6 @@ def prepar_run(num_perso=2):
             time.sleep(1)
 
 
-
-    
-
      
 def kill_boss(trajet,retry,num_perso=2,re_kill_boss=False):
     time.sleep(np.random.uniform(1.7, 2.2))
@@ -502,8 +477,6 @@ def death():
     return False
     
 
-    
-    
 def se_vider(sell=False):
     if in_city():
         if sell:
@@ -514,52 +487,6 @@ def se_vider(sell=False):
                 if go_blacksmith()==False:return False
         go_storage()
         return True 
-    return False
-
-
-def craft_charm(rare_charm=False):
-    time.sleep(1)
-    click_icone('screen/alchimie/synthesis.png',1)
-    click_icone('screen/alchimie/synthesis.png',1)
-    if rare_charm: path='screen/alchimie/rare_charm.png'
-    else: path='screen/alchimie/magic_charm.png'
-    if not click_icone(path,1,0.3):
-        click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
-        click_icone(path,1,0.3)
-    pyautogui.leftClick(2100,700)
-    for i in range(0,50):
-        pyautogui.scroll(-30000)
-    for i in range (0,3):
-        pyautogui.rightClick(1980,950)
-        time.sleep(0.3)
-    click_icone('screen/alchimie/craft.png')
-    
-def alchimie_charm(rare_charm=False):
-    if click_icone('screen/alchimie/atelier.png',1,0,confidence=0.8) :
-        click_icone('screen/alchimie/receive.png')
-        time.sleep(0.5)
-        pyautogui.leftClick()
-        time.sleep(0.5)
-        pyautogui.leftClick()
-        craft_charm(rare_charm)
-    elif click_icone('screen/alchimie/atelier_vide.png',1,0):
-        craft_charm(rare_charm)
-        
-
-def alchimie(wave,num_perso=2,rare_charm=False):
-    for i in range(3):
-        if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) is None :
-            go_alchimie(wave)
-            time.sleep(0.5)
-    
-        if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) :
-            if num_perso==1:nbr_atelier=4
-            else:nbr_atelier=1
-            for i in range(nbr_atelier):
-                alchimie_charm(rare_charm)
-            click_icone('screen/launch/croix.png')
-            time.sleep(0.5)
-            return True
     return False
     
         

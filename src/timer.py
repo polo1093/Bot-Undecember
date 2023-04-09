@@ -10,7 +10,6 @@ class Timer():
     def __init__(self,time_wait):
         self.start_time = time.perf_counter()
         self.time_wait = time_wait
-        pass
     
     def is_expire(self):
         return time.perf_counter()-self.start_time >= self.time_wait    
