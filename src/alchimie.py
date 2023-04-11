@@ -21,6 +21,7 @@ class Alchimie():
         if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) :
             if self.num_perso==1:nbr_atelier=4
             else:nbr_atelier=1
+            self.filtre_map=True
             for i in range(nbr_atelier):
                 if self.is_one_clear_atelier():
                     if self.T9_up:
@@ -78,15 +79,22 @@ class Alchimie():
         fct.click_icone('screen/alchimie/synthesis.png',1)
         fct.click_icone('screen/alchimie/synthesis.png',1)
         if not pyautogui.locateOnScreen('screen/alchimie/NormalChaos.png',grayscale=True,confidence=0.9):
-            fct.click_icone('screen/alchimie/Chaos Card.png',1,0.3,True,0.99)
+            fct.click_icone('screen/alchimie/Chaos Card.png',1)
         pyautogui.moveTo(350,650)
-        for i in range(0,10):
-            pyautogui.scroll(-30000)
-        if fct.click_icone('screen/alchimie/T9_map.png',1,0.3,True,0.99):
+        for i in range(0,20):
+            pyautogui.scroll(-3000,_pause=False)
+        if fct.click_icone('screen/alchimie/T9_map.png',2):
+            if self.filtre_map:
+                fct.click_icone('screen/alchimie/filtre_map.png',1,0.7)
+                fct.click_icone('screen/alchimie/select_all.png',1,0.7)
+                fct.click_icone('screen/alchimie/ok_map_filtre.png',1,0.7)
+                self.filtre_map=False
+                pyautogui.rightClick(2000,620)
             for i in range (0,4):
                 pyautogui.rightClick(2000,620)
                 time.sleep(0.3)
             if fct.click_icone('screen/alchimie/craft.png'):
                 return True
-            return False
+            if pyautogui.locateOnScreen('screen/alchimie/map_empty.png',grayscale=True,confidence=0.9):
+                return False
         return True

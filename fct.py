@@ -80,7 +80,7 @@ def find_region(m,number=10):
     
     #test si on a la map
     x_ligne=410+101*(int(number/5))
-    if not pyautogui.locateOnScreen('screen/map/case_vide.png',region=[1920,x_ligne-65,130,130]):
+    if not pyautogui.locateOnScreen('screen/map/case_vide.png',region=[1920,x_ligne-65,130,130]):# don t work
         return 1980,x_ligne 
     return False
 
