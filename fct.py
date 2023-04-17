@@ -5,6 +5,10 @@ import pandas as pd
 import re
 import datetime
 import math 
+from importlib import reload
+import src.timer as timer
+reload(timer)
+
 
 region={"Wanderer": "Aphros",
         "Plague" :  "Ortemis",
