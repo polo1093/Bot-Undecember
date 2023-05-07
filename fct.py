@@ -112,7 +112,7 @@ def launch_remote_desk():
     pyautogui.leftClick(1400,600)
     time.sleep(0.4)
     pyautogui.write("")
-    time.sleep(0.10)
+    time.sleep(0.20)
     pyautogui.write("total")
     time.sleep(0.10)
     pyautogui.keyDown('shift')
@@ -155,7 +155,7 @@ def launch_game(num_perso):
         if click_icone('screen/launch/start_2.png',20,0.6) == False:
             return False
         time.sleep(7) 
-
+        click_icone('screen/launch/reset.png',1)
         if not in_city():
             leave_map()
             if not in_city():
@@ -480,12 +480,13 @@ def death():
 def se_vider(sell=False):
     if in_city():
         if sell:
+            go_storage()
             if go_sell()==False:
                 if go_sell()==False:return False           
         else:
             if go_blacksmith()==False:
                 if go_blacksmith()==False:return False
-        go_storage()
+            go_storage()
         return True 
     return False
     

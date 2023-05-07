@@ -14,13 +14,15 @@ class Alchimie():
     
     def run(self):
         for i in range(3):
-            if not pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) :
-                self.go_alchimie()
-                time.sleep(0.5)
+            if pyautogui.locateOnScreen(f'screen/alchimie/in_alchimie.png',grayscale=True,confidence=0.9) :
+                break
+            self.go_alchimie()
+            time.sleep(0.5)
+            
         
-        if pyautogui.locateOnScreen(f'screen/launch/in_alchimie.png',grayscale=True,confidence=0.9) :
-            if self.num_perso==1:nbr_atelier=4
-            else:nbr_atelier=1
+        if pyautogui.locateOnScreen(f'screen/alchimie/in_alchimie.png',grayscale=True,confidence=0.9) :
+            if self.num_perso==1:nbr_atelier=3
+            else:nbr_atelier=3
             self.filtre_map=True
             for i in range(nbr_atelier):
                 if self.is_one_clear_atelier():
@@ -65,8 +67,10 @@ class Alchimie():
             fct.click_icone('screen/alchimie/charm.png',1,0.3,True,0.99)
             fct.click_icone(path,1,0.3)
         pyautogui.leftClick(2100,700)
-        for i in range(0,50):
-            pyautogui.scroll(-30000)
+        for i in range(0,150):
+            pyautogui.scroll(-3000,_pause=False)
+            time.sleep(0.005)
+        time.sleep(0.3)   
         for i in range (0,3):
             pyautogui.rightClick(1980,950)
             time.sleep(0.3)
@@ -83,6 +87,7 @@ class Alchimie():
         pyautogui.moveTo(350,650)
         for i in range(0,20):
             pyautogui.scroll(-3000,_pause=False)
+        time.sleep(0.3)
         if fct.click_icone('screen/alchimie/T9_map.png',2):
             if self.filtre_map:
                 fct.click_icone('screen/alchimie/filtre_map.png',1,0.7)
