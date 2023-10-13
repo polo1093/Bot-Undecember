@@ -19,11 +19,13 @@ region_T11={"Alyssa": "Aphros",
         "Casthor" : "Caspol",
         "Miraseti": "Ganida",
         "Boreal":   "Eunos",
-        "Capri":  "Tipan",
+        "Capri":    "Tipan",
         "Aquilla":  "Stra",
         "Shepherd": "Laia",
         "Acuben":   "Hira",
-        "Hamal":    "Prele"}
+        "Hamal":    "Prele",
+        "Spica":    "Tri",
+        "Leo":      "Nemera"}
 
 class Map():
     def __init__(self,list_map,can_run_T11=False):
@@ -49,7 +51,8 @@ class Map():
             np.random.shuffle(self.list_map_T10)
             name_map=self.list_map_T10[0]
             pyautogui.rightClick(self.find_region(region_T10[name_map],stock_map=5))  
-                
+            
+        
         time.sleep(1)
         fct.click_icone('screen/launch/activate.png',3,0.3,False,0.8)
         time.sleep(1)
@@ -75,11 +78,11 @@ class Map():
         return 1980,x_ligne 
         
     def reset_region(self):
-        fct.click_icone('screen/launch/start_filtre.png',1)
-        fct.click_icone('screen/launch/start_filtre.png',1)
+        fct.click_icone('screen/launch/start_filtre.png',1,confidence=0.8)
+        fct.click_icone('screen/launch/start_filtre.png',1,confidence=0.8)
         pyautogui.leftClick(1150,1000)
-        fct.click_icone('screen/launch/select_all.png',1)
-        fct.click_icone('screen/launch/select_all.png',1)
+        fct.click_icone('screen/launch/select_all.png',1,confidence=0.8)
+        fct.click_icone('screen/launch/select_all.png',1,confidence=0.8)
             
             
     def active_filtre_T11(self):

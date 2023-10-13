@@ -412,8 +412,8 @@ def calcul_distance(x1, y1):
     return int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
 
 def time_run(x,y):
-    """Pr 1101 unité parcourus il faut 2.14s, on va multi par racine de deux pr avoir de la marge"""
-    return (calcul_distance(x,y)*2.14/1101) * math.sqrt(2)
+    """Pr 1101 unité parcourus il faut 1.8s, on va multi par racine de deux pr avoir de la marge"""
+    return (calcul_distance(x,y)*1.8/1101) * math.sqrt(2)
 
 def in_map():
     path=f'screen/launch/test_in_game.png'
