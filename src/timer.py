@@ -16,6 +16,11 @@ class Timer():
     
     def is_running(self):
         return time.perf_counter()-self.start_time < self.time_wait
+    
+    def relaunch(self,time_wait=-1):
+        self.start_time = time.perf_counter()
+        self.time_wait = self.time_wait if time_wait==-1 else time_wait
+        
 
 
 

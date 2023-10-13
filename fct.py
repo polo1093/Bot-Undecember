@@ -3,28 +3,18 @@ import time
 import pyautogui
 import pandas as pd
 import re
-import datetime
 import math 
 from importlib import reload
 import src.timer as timer
 reload(timer)
 import src.alchimie as alchimie
 reload(alchimie)
+import src.map as map
+reload(map)
 
 
 
 
-region={"Wanderer": "Aphros",
-        "Plague" :  "Ortemis",
-        "Flash" :   "Caspol",
-        "Pirate":   "Ganida",
-        "Hammer":   "Eunos",
-        "Brazier":  "Tipan",
-        "Air":      "Stra",
-        "Shepherd": "Laia",
-        "Greed":    "Tri",
-        "Lighting": "Hira",
-        "Cycle":    "Nemera"}
 
 def click_icone(path,boucle=10,wait=0.3,gris=True,confidence=0.95):
     while boucle > 0:
@@ -61,35 +51,7 @@ def find_blue(path):
         p= pyautogui.screenshot().getpixel((i[0]+i[2]-5,i[1]+i[3]-5))
         if p[2] > 34 and 80 > p[0]+p[1]:
             return i
-    return False
-
-
-def reset_region():
-    click_icone('screen/launch/start_filtre.png',1)
-    click_icone('screen/launch/start_filtre.png',1)
-    pyautogui.leftClick(1150,1000)
-    if click_icone('screen/launch/select_all.png',1):
-        click_icone('screen/launch/select_all.png',1)
-    
-def find_region(m,number=10):
-    #mise ne place du filtre
-    reset_region()   
-    click_icone(f'screen/map/{region[m]}.png',1)
-    click_icone('screen/map/ok_filtre.png',1)
-    click_icone('screen/map/ok_filtre.png',1)
-    
-    #test si on a la map
-    x_ligne=410+101*(int(number/5))
-    if not pyautogui.locateOnScreen('screen/map/case_vide.png',region=[1920,x_ligne-65,130,130]):# don t work
-        return 1980,x_ligne 
-    return False
-
-def filtre_map(list_map):
-    reset_region()  
-    for name_map in list_map: 
-        click_icone(f'screen/map/{region[name_map]}.png',1)
-    click_icone('screen/map/ok_filtre.png',1)
-    click_icone('screen/map/ok_filtre.png',1)      
+    return False    
 
 
 def launch_tower(wave,num_perso=2):
@@ -110,7 +72,8 @@ def launch_remote_desk():
     pyautogui.leftClick(181,1406)
     time.sleep(0.2)
     pyautogui.leftClick(1400,600)
-    time.sleep(0.4)
+    time.sleep(0.3)
+    pyautogui.leftClick(1400,600)
     pyautogui.write("")
     time.sleep(0.20)
     pyautogui.write("total")
@@ -139,11 +102,11 @@ def launch_game(num_perso):
             time.sleep(1)
             launch_remote_desk()
             time.sleep(1)
-            if click_icone('screen/launch/start_1.png',5,0.6,False) == False:
+            if click_icone('screen/launch/start_1.png',5,0.6,False,confidence=0.8) == False:
                 return False
         time.sleep(np.random.uniform(5.1, 7))
 
-        if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6) == False:
+        if click_icone(f'screen/launch/perso{num_perso}.png',20,0.6,confidence=0.8) == False:
             pyautogui.leftClick(1650,15)
             time.sleep(1)
             launch_remote_desk()
@@ -152,7 +115,7 @@ def launch_game(num_perso):
                 return False
         time.sleep(np.random.uniform(0.3, 0.7))
         
-        if click_icone('screen/launch/start_2.png',20,0.6) == False:
+        if click_icone('screen/launch/start_2.png',20,0.6,confidence= 0.8) == False:
             return False
         time.sleep(7) 
         click_icone('screen/launch/reset.png',1)
@@ -168,10 +131,10 @@ def launch_game(num_perso):
 def party_area():
     if not click_icone('screen/launch/party.png',1, confidence=0.90):
         #create party area
-        if not click_icone('screen/launch/in_game.png',1): # un peu redontant avec c_party
+        if not click_icone('screen/launch/in_game.png',1,confidence=0.80): # un peu redontant avec c_party
             return False
         pyautogui.leftClick()
-        click_icone('screen/launch/c_party.png')
+        click_icone('screen/launch/c_party.png',confidence=0.8)
         click_icone('screen/launch/c_party.png',1)
         time.sleep(np.random.uniform(0.2, 0.8))
         
@@ -188,7 +151,7 @@ def party_area():
         time.sleep(np.random.uniform(2, 3))
         click_icone('screen/launch/party.png',1, confidence=0.90)
     #test si on y est
-    if click_icone('screen/launch/move_to_party_area.png',1):
+    if click_icone('screen/launch/move_to_party_area.png',1, confidence=0.90):
         time.sleep(np.random.uniform(2, 3))
         click_icone('screen/launch/party.png',1, confidence=0.90)
     if pyautogui.locateOnScreen('screen/launch/Leave_to_party_area.png',grayscale=True,confidence=0.9) \
@@ -312,25 +275,16 @@ def go_storage():
 
 
 def go_tower(wave):
-    if pyautogui.locateOnScreen(f'screen/launch/in_tower.png',confidence=0.7) is None :
-        if go_waypoint()==False:
-            return False
-        move_trajet(wave["go_tower"])
-        if click_icone('screen/launch/dungeon.png',1)==False:
-            pyautogui.leftClick((1126,734),duration=0.08)
-            time.sleep(0.5)
-            if click_icone('screen/launch/dungeon.png',1)==False:
+    if not pyautogui.locateOnScreen(f'screen/launch/in_tower.png',confidence=0.7) :
+        if not click_icone('screen/launch/dungeon.png',1):
+            if not go_waypoint():
+                return False
+            move_trajet(wave["go_tower"])
+            if not click_icone('screen/launch/dungeon.png',1):
+                pyautogui.leftClick((1126,734),duration=0.08)
+                time.sleep(0.5)
                 return False
     return True
-    
-def go_alchimie(wave):
-    time.sleep(1)
-    if go_waypoint():
-        move_trajet(wave["go_alchimie"])
-        click_icone('screen/alchimie/take_alchimie.png',3)
-        return True
-    return False
-
 
 def go_map(wave):
     for i in range(10):
@@ -339,6 +293,7 @@ def go_map(wave):
         keyboard('f')
         time.sleep(0.5)
         if in_city()==False:
+            click_icone('screen/launch/waypoint.png',1)#à cause ges map jaunes
             return True
     return False
 
@@ -462,7 +417,7 @@ def time_run(x,y):
 
 def in_map():
     path=f'screen/launch/test_in_game.png'
-    find=pyautogui.locateOnScreen(path, grayscale=False, confidence=0.95)
+    find=pyautogui.locateOnScreen(path, grayscale=False, confidence=0.9)
     if find is None or in_city():
         return False
     return True
