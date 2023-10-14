@@ -70,9 +70,8 @@ def launch_tower(wave,num_perso=2):
 
 def launch_remote_desk():
     pyautogui.leftClick(181,1406)
+    click_icone('screen/launch/connexion.png',confidence=0.7)
     time.sleep(0.2)
-    pyautogui.leftClick(1400,600)
-    time.sleep(0.3)
     pyautogui.leftClick(1400,600)
     pyautogui.write("")
     time.sleep(0.20)
@@ -83,8 +82,7 @@ def launch_remote_desk():
     pyautogui.keyUp('shift')
     time.sleep(0.1)
     pyautogui.leftClick(1100,717)#777)
-    time.sleep(2)
-    
+    time.sleep(2)    
     
     
     
