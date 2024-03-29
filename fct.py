@@ -241,18 +241,28 @@ def go_blacksmith():
 
 def go_sell():
     go_waypoint()
+    keyboard('i')
+    time.sleep(2)
     click_icone('screen/launch/icone_blacksmith.png')
     time.sleep(5)
-    if click_icone('screen/launch/icone_sell.png')==False:
-        return False
-    time.sleep(0.5)
+
     if click_icone('screen/launch/arme.png'):
         click_icone('screen/launch/arme.png')
+        click_icone('screen/launch/magic.png')
+        click_icone('screen/launch/rare.png')
         click_icone('screen/launch/clear.png')
         
         click_icone('screen/launch/sell.png',1,0.3,True)
         click_icone('screen/launch/ok.png',1)
-
+        
+    if click_icone('screen/launch/others.png'):
+        click_icone('screen/launch/others.png')
+        click_icone('screen/launch/magic.png')
+        click_icone('screen/launch/clear.png')
+        
+        click_icone('screen/launch/sell.png',1,0.3,True)
+        click_icone('screen/launch/ok.png',1)
+    
     click_icone('screen/launch/croix.png',2)
     click_icone('screen/launch/croix.png',1)
     time.sleep(0.5)
@@ -260,15 +270,21 @@ def go_sell():
 
 def go_storage():
     time.sleep(0.5)
+
     if go_waypoint() :
-        click_icone('screen/launch/icone_storage.png')
-        time.sleep(3)
+        keyboard('i')
+        time.sleep(2)
         click_icone('screen/launch/storage.png',1)
+        time.sleep(3)
+        
         click_icone('screen/launch/storage_clear.png',1)
         
         click_icone('screen/launch/croix.png')
         time.sleep(0.5)
+        keyboard('i')
+        time.sleep(2)
         return True
+   
     else: return False
 
 
